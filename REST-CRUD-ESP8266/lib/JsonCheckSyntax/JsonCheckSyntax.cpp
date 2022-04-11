@@ -2,7 +2,7 @@
 
 int JsonCheckSyntax::CheckSyntax (char* txt_Json, int size_Json)
 {
-    char* minifyResult = new char[size_Json]; // Array temporária de processamento
+    char* minifyResult = new char[size_Json+1]; // Array temporária de processamento
     int minifyIndex = 0;   // Indexador do minifyResult
 
     // Contadores para verificação de sintaxe
@@ -23,8 +23,7 @@ int JsonCheckSyntax::CheckSyntax (char* txt_Json, int size_Json)
         // Ignora comentário de linha
         if (txt_Json[i] == '/' && txt_Json[i + 1] == '/' && !textkey)
         {
-            do
-            {
+            do {
                 i++;
                 if (i >= size_Json) break;
             } while (txt_Json[i] != '\n');
@@ -33,8 +32,7 @@ int JsonCheckSyntax::CheckSyntax (char* txt_Json, int size_Json)
         else if (txt_Json[i] == '/' && txt_Json[i + 1] == '*' && !textkey)
         {
             i++;
-            do
-            {
+            do {
                 i++;
                 if (i >= size_Json) break;
             } while (txt_Json[i] != '*' || txt_Json[i + 1] != '/');
@@ -43,7 +41,7 @@ int JsonCheckSyntax::CheckSyntax (char* txt_Json, int size_Json)
         else
         {
             // Não insere espaços
-            if (txt_Json[i] != ' ' && txt_Json[i] != '\r' && txt_Json[i] != '\n' && txt_Json[i] != '\t')
+            if ((txt_Json[i] != ' ' && txt_Json[i] != '\r' && txt_Json[i] != '\n' && txt_Json[i] != '\t')||textkey)
             {
                 // Adiciona caracter
                 minifyResult[minifyIndex] = txt_Json[i];
@@ -161,7 +159,7 @@ int JsonCheckSyntax::CheckSyntax (char* txt_Json, int size_Json)
 
 	delete[] minifyResult;	
 
-	for (int i=minifyIndex; i<size_Json;i++)
+	for (int i=minifyIndex; i < size_Json; i++)
     {
         *txt_Json = 0;
         txt_Json++;
